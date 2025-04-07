@@ -59,6 +59,19 @@
       color: #999;
     }
 
+    #playMusic {
+      margin-top: 30px;
+      background-color: #ff66a3;
+      border: none;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transition: background 0.3s ease;
+    }
+
     canvas {
       position: fixed;
       top: 0;
@@ -76,13 +89,19 @@
       stecu stecu kalu bisa lanjut datang ke rumah stecu stecu 💖✨
     </p>
     <div class="from">— From your no.1 fan 😘</div>
+
+    <button id="playMusic">🎵 Tap to Play Music</button>
   </div>
 
-  <!-- 🎶 Background YouTube music (hidden video) -->
-  <iframe width="0" height="0" src="https://www.youtube.com/embed/SzebIgHlSSE?autoplay=1&loop=1&playlist=SzebIgHlSSE&controls=0&mute=0" 
-  frameborder="0" allow="autoplay" allowfullscreen style="display:none;"></iframe>
+  <!-- 🎶 Hidden YouTube player -->
+  <div id="player-container" style="display: none;">
+    <iframe id="ytplayer" width="0" height="0"
+      src="https://www.youtube.com/embed/SzebIgHlSSE?enablejsapi=1&version=3&playerapiid=ytplayer&loop=1&playlist=SzebIgHlSSE"
+      frameborder="0" allow="autoplay" allowfullscreen>
+    </iframe>
+  </div>
 
-  <!-- 🎊 Confetti animation -->
+  <!-- 🎊 Confetti -->
   <canvas id="confetti"></canvas>
   <script>
     const canvas = document.getElementById('confetti');
@@ -134,10 +153,26 @@
       canvas.height = H;
     });
   </script>
+
+  <!-- 🎵 YouTube Music Player Script -->
+  <script>
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    let player;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('ytplayer');
+    }
+
+    document.getElementById('playMusic').addEventListener('click', () => {
+      if (player && player.playVideo) {
+        player.playVideo();
+        document.getElementById('playMusic').style.display = 'none';
+      }
+    });
+  </script>
+
 </body>
 </html>
-
-
-
-
-
