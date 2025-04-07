@@ -57,14 +57,15 @@
 
     #playMusic {
       margin-top: 30px;
-      font-size: 16px;
-      padding: 10px 20px;
-      background-color: #ff99aa;
-      color: white;
+      background-color: #ff66a3;
       border: none;
-      border-radius: 10px;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 20px;
+      font-size: 16px;
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(255, 105, 135, 0.3);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transition: background 0.3s ease;
     }
 
     canvas {
@@ -73,6 +74,10 @@
       left: 0;
       pointer-events: none;
     }
+
+    iframe {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -80,19 +85,19 @@
   <div class="card">
     <h1>Happy Birthday<br>Caca Genit! 🎉</h1>
     <div class="cake">🎂</div>
-    <p>
-      stecu stecu kalu bisa lanjut datang ke rumah stecu stecu 💖✨
-    </p>
+    <p>stecu stecu kalu bisa lanjut datang ke rumah stecu stecu 💖✨</p>
     <div class="from">— From your no.1 fan 😘</div>
-
-    <!-- 🎵 Tap to Play -->
-    <button id="playMusic">🎵 Tap to play music</button>
-    <div id="player-container"></div>
+    <button id="playMusic">Tap here to play the surprise 🎵</button>
+    <div id="player"></div>
   </div>
 
-  <!-- 🎊 Confetti Animation -->
+  <!-- 🎊 Confetti -->
   <canvas id="confetti"></canvas>
+
+  <!-- Load YouTube IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
   <script>
+    // Confetti logic
     const canvas = document.getElementById('confetti');
     const ctx = canvas.getContext('2d');
     let W = window.innerWidth;
@@ -142,15 +147,25 @@
       canvas.height = H;
     });
 
-    // Music play trigger
-    document.getElementById('playMusic').addEventListener('click', () => {
-      const container = document.getElementById('player-container');
-      container.innerHTML = `
-        <iframe width="0" height="0"
-          src="https://www.youtube.com/embed/SzebIgHlSSE?autoplay=1&loop=1&playlist=SzebIgHlSSE&controls=0"
-          frameborder="0" allow="autoplay" allowfullscreen>
-        </iframe>`;
-      document.getElementById('playMusic').style.display = 'none';
+    // YouTube Player Logic
+    let player;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        height: '0',
+        width: '0',
+        videoId: 'SzebIgHlSSE',
+        playerVars: {
+          autoplay: 0,
+          loop: 1,
+          playlist: 'SzebIgHlSSE'
+        }
+      });
+    }
+
+    document.getElementById("playMusic").addEventListener("click", function() {
+      if (player && player.playVideo) {
+        player.playVideo();
+      }
     });
   </script>
 
